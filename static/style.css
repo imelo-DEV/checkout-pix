@@ -9,6 +9,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   color: white;
+  padding: 20px;
 }
 
 /* Formulário centralizado */
@@ -16,21 +17,25 @@ form {
   background: rgba(255, 255, 255, 0.1);
   padding: 30px;
   border-radius: 8px;
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Inputs e selects */
 input, select {
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   border: none;
   font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* Botões */
 button {
   position: relative;
   background: linear-gradient(90deg, #0d1e56, #6b32a8);
@@ -82,8 +87,37 @@ button:hover {
   100% { transform: rotate(360deg); }
 }
 
-/* Centralizar o container do QR code e botões */
+/* QR code e informações */
 #pixinfo {
   text-align: center;
   margin-top: 30px;
+  width: 100%;
+}
+
+#qrcode {
+  margin: 0 auto;
+}
+
+/* ✅ Responsivo */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  form {
+    padding: 20px;
+    font-size: 0.95rem;
+  }
+
+  input, select, button {
+    font-size: 1rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  #pixinfo {
+    font-size: 0.95rem;
+  }
 }

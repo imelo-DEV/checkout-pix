@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout Pix</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <h1>PAINEL DO PIX7</h1>
+  <form id="checkoutForm">
+  <input type="text" name="name" placeholder="Nome completo" required>
+  <input type="text" name="docNumber" placeholder="CPF/CNPJ" required>
+  <input type="text" id="amount" name="amount" placeholder="Valor (ex: 10,00)" required>
+  <button type="submit" id="btnGerar">Gerar Pix</button>
+</form>
+
+<div id="pixinfo" style="display: none;">
+  <div id="qrcode"></div>
+  <div style="margin-top: 20px;">
+    <label for="copiaecola"><strong>Copia e Cola:</strong></label><br>
+    <input id="copiaecola" type="text" readonly style="width: 80%; padding: 10px;" />
+    <button id="btnCopiar" type="button">Copiar</button>
+  </div>
+</div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById("checkoutForm");
+  const btnGerar = document.getElementById("btnGerar");
+  const btnCopiar = document.getElementById("btnCopiar");
+  const pixinfo = document.getElementById("pixinfo");
+  const copiaecola = document.getElementById("copiaecola");
+  const qrcodeDiv = document.getElementById("qrcode");
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    btnGerar.classList.add("sending");
+
+    const rawAmount = form.amount.value.replace(',', '.');
+    const data = {
+      name: form.name.value,
+      email: "emailfixo@seudominio.com",
+      docType: "cpf",  // ou "cnpj"
+      docNumber: form.docNumber.value,
+      amount: Math.round(parseFloat(rawAmount) * 100)
+    };
+
+    try {
+      const res = await fetch("/create_pix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+
+      if (json.pixPayload) {
+        pixinfo.style.display = "block";
+        copiaecola.value = json.pixPayload;
+
+        qrcodeDiv.innerHTML = "";
+        new QRCode(qrcodeDiv, {
+          text: json.pixPayload,
+          width: 250,
+          height: 250
+        });
+      } else {
+        alert("Erro ao gerar Pix: " + (json.error || "Desconhecido"));
+      }
+    } catch(err) {
+      alert("Erro na requisição: " + err.message);
+    } finally {
+      btnGerar.classList.remove("sending");
+    }
+  });
+
+  btnCopiar.addEventListener("click", function() {
+    copiaecola.select();
+    copiaecola.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Código Pix copiado!");
+  });
+});
+
+  </script>
+</body>
+</html>

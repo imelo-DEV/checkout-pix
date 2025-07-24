@@ -1,0 +1,89 @@
+/* body com background gradiente e flex para centralizar tudo */
+body {
+  background: linear-gradient(90deg, #1e3c72, #2a5298, #6a3093);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* Formulário centralizado */
+form {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 8px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+/* Inputs e selects */
+input, select {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+}
+
+button {
+  position: relative;
+  background: linear-gradient(90deg, #0d1e56, #6b32a8);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 1s;
+  margin: 10px 0;
+  display: inline-block;
+}
+
+button:before {
+  content: '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -12px;
+  width: 24px;
+  height: 24px;
+  border: 2px solid white;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.5s;
+  animation: rotate 0.8s linear infinite;
+}
+
+button.sending {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+button.sending:before {
+  opacity: 1;
+  transition-delay: 0.5s;
+  transition-duration: 1s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Centralizar o container do QR code e botões */
+#pixinfo {
+  text-align: center;
+  margin-top: 30px;
+}
